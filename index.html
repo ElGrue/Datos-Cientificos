@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Datos Curiosos con Música COOL</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", sans-serif;
+      background-color: #222;
+      color: #00ffcc;
+      text-align: center;
+      padding: 50px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 20px;
+      background-color: #00ffcc;
+      color: #222;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    #dato {
+  margin-top: 40px;
+  font-size: 24px;
+  max-width: 600px; /* Para que no se extienda demasiado */
+  margin-left: auto;
+  margin-right: auto;
+  word-wrap: break-word; /* Rompe palabras largas si es necesario */
+  white-space: normal; /* Asegura que haya saltos de línea normales */
+}
+
+    /* REBOTE */
+    @keyframes rebote {
+      0%   { transform: scale(1); }
+      30%  { transform: scale(1.1); }
+      50%  { transform: scale(0.95); }
+      70%  { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    button.rebotando {
+      animation: rebote 0.4s ease;
+    }
+
+    /* GIF inicialmente oculto */
+    #gif-bailarin {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 250px;
+      z-index: 0;
+      opacity: 0.8;
+      pointer-events: none;
+      display: none; /* ¡ESCONDIDO al inicio! */
+    }
+/* ANIMACIÓN FADE-IN */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#dato.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+  </style>
+</head>
+
+<body style="position: relative; overflow: hidden;">
+
+  <!-- GIF que aparece mágicamente después -->
+  <img src="Spamton_Dance.gif" id="gif-bailarin">
+
+  <div style="position: relative; z-index: 1;">
+    <h1>¿Aburrido? ¡Aquí te damos datos curiosos sobre ciencia!</h1>
+    <p>Presiona el botón y deja que la ciencia fluya. (La música empezará cuando presiones el botón)</p>
+
+    <!-- MÚSICA DE FONDO -->
+    <audio id="musica" loop>
+      <source src="Spamton.mp3" type="audio/mpeg">
+      Tu navegador no soporta música 🙁
+    </audio>
+
+    <button id="boton" onclick="mostrarDato()">¡Dame un DATAZO!</button>
+    <div id="dato">Aquí aparecerán cosas científicas</div>
+  </div>
+
+  <script>
+  const todosLosDatos = [
+    "¡Un solo rayo puede contener hasta mil millones de julios de energía!",
+    "¡Los átomos están formados en un 99.9999999% por espacio vacío!",
+    "Si pudieras doblar un papel 42 veces, ¡llegarías a la Luna!",
+    "¡Tú eres más bacterias que humano!",
+    "¡La luz del Sol tarda 8 minutos y 20 segundos en llegar a la Tierra!",
+    "¡Hay más estrellas en el universo que granos de arena en la Tierra!",
+    "Las bananas son radiactivas... no es broma.",
+    "¡Cuando miras al cielo nocturno, estás viendo el pasado! Ooo...",
+	"¡Urano tiene un diámetro aproximado de más de 50,000 km! ¡Eso es más que una milla!!",
+	  "Tu cerebro produce la suficiente energía para encender un foco LED, ¡todo el tiempo!",
+	  "Nunca podrás ver a algo caer en un agujero negro... ¡Gracias a los efectos relativistas!",
+	  "El universo va a acabar cuando ya no haya energía libre, y nada pueda suceder nunca más...",
+	  "¡En la EEI (Estación Espacial Internacional) SÍ experimentan gravedad! ¡Lo que hace que floten es la MICROGRAVEDAD! Gracias a que se encuentra en constante caída libre.",
+	  "¡En la EEI (Estación Espacial Internacional) Experimentan casi la misma gravedad que nosotros! (Aprox. el 89%).",
+	  "Robert Pershing Wadlow fue el hombre más alto de la historia, todo se debió a una hiperplasia de la glándula pituitaria, que hizo que creciera hasta 2.72 metros.",
+	  "¡El agua que bebemos tiene mas de 4 millones de años!",
+	  "¡Cuando viajas en tren, técnicamente estas viajando en el tiempo! (...Solo que muy poquito.)",
+	  "¡El organismo más pequeño es Nanoarchaeum equitans, una arquea unicelular extremófila!",
+	  "¡Se han extraído aproximadamente 187,000 toneladas de oro en la historia, y se cree que aún quedan unas 57,000 toneladas en reservas subterráneas!",
+	  "Si tu cuerpo tuviera 620 millas de largo, podrías morder tu pie antes de dormir, y el dolor tardaría 8 horas en llegar a tu cerebro, así despertandote",
+	  "Puedes evitar el semáforo en rojo si viajas a 114,004,827 millas por hora, a esa velocidad, la luz se habrá desplazado tanto al azul, que la luz se verá verde.",
+  ];
+
+  let datosDisponibles = [...todosLosDatos]; // copia inicial
+  let musicaIniciada = false;
+  let gifMostrado = false;
+
+  function mostrarDato() {
+  if (datosDisponibles.length === 0) {
+    datosDisponibles = [...todosLosDatos];
+  }
+
+  const indice = Math.floor(Math.random() * datosDisponibles.length);
+  const dato = datosDisponibles.splice(indice, 1)[0];
+
+  const datoElemento = document.getElementById("dato");
+  datoElemento.textContent = dato;
+
+  // FADE-IN ✨
+  datoElemento.classList.remove("fade-in");
+  void datoElemento.offsetWidth; // Reiniciar animación
+  datoElemento.classList.add("fade-in");
+
+  if (!musicaIniciada) {
+    document.getElementById("musica").play();
+    musicaIniciada = true;
+  }
+
+  const boton = document.getElementById("boton");
+  boton.classList.add("rebotando");
+  setTimeout(() => boton.classList.remove("rebotando"), 400);
+
+  if (!gifMostrado) {
+    document.getElementById("gif-bailarin").style.display = "block";
+    gifMostrado = true;
+  }
+}
+
+</script>
+
+</body>
+</html>
